@@ -32,7 +32,7 @@ public class Simulation {
         }
 
         // MAIN DAILY LOOP
-        while ((!farmer.isDead() || !doctor.isDead() || !hunter.isDead() || !carpenter.isDead()) && day <= 265) {
+        while ((!farmer.isDead() || !doctor.isDead() || !hunter.isDead() || !carpenter.isDead()) && day <= 365) {
 
             day++;
 
@@ -56,7 +56,7 @@ public class Simulation {
                 }
 
                 //HUNTER SKILLS
-                if (rand.nextInt() % 5 == 0) {
+                if (rand.nextInt(5) == 0) {
                     for (Person p : village) {p.increaseFood(2);}
                 }
 
@@ -64,14 +64,14 @@ public class Simulation {
                 for (Person p : village) {p.decreaseFood(1);}
 
                 //GENERATE DISASTER
-                int x = rand.nextInt() % 5;
+                int x = rand.nextInt(5);
 
                 if (x == 0) {disaster = "none";}
 
                 else if (x == 1) {
                     disaster = "hurricane";
                     for (Person p : village) {
-                        if (p.getShelter() == 0) {p.decreaseHealth(5); }
+                        if (p.getShelter() <= 0) {p.decreaseHealth(5); }
                         else {p.decreaseShelter(3);}
                     }
                 }
@@ -106,13 +106,13 @@ public class Simulation {
                 else {carpenter.increaseShelter(1);}
 
                 //HUNTER SKILLS
-                if (rand.nextInt() % 5 == 0) {hunter.increaseFood(2);}
+                if (rand.nextInt(5) == 0) {hunter.increaseFood(2);}
 
                 //DECREASE FOOD
                 for (Person p : village) {p.decreaseFood(1);}
 
                 //GENERATE DISASTER
-                int x = rand.nextInt() % 5;
+                int x = rand.nextInt(5);
 
                 if (x == 0) {disaster = "none";}
 
@@ -152,10 +152,12 @@ public class Simulation {
                 }
             }
 
+            //CHECK FOR DEAD VILLAGERS
             for (Person p : village) {p.checkIfDead();}
 
             System.out.println("");
 
+            //SHOW DEAD VILLAGERS
             for (Person p : village) {
                 if (p.isDead() && p.isPrintable()) {
                     System.out.println(p.name + " is dead");
