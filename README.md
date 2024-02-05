@@ -75,7 +75,7 @@ Everyone is dead
 12.06 days
 
 # Society Average:
-194.14 days
+183.65 days
 
 # Write-Up
 To start, I of course assumed that the society mode would run longer on average than anarchy mode.
