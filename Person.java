@@ -11,7 +11,6 @@ public class Person {
         this.shelter = 10;
         this.food = 10;
         this.isDead = false;
-        this.printable = true;
         this.name = name;
     }
 
@@ -54,20 +53,16 @@ public class Person {
         return this.shelter;
     }
 
+    public int getHealth() {
+        return this.health;
+    }
+
     public int getFood() {
         return this.food;
     }
 
     public boolean isDead() {
         return this.isDead;
-    }
-
-    public boolean isPrintable() {
-        return this.printable;
-    }
-
-    public void setPrintable(boolean x) {
-        this.printable = x;
     }
 
     public void setIsDead(boolean x) {

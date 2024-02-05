@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Simulation {
@@ -6,13 +7,21 @@ public class Simulation {
         Person doctor = new Person("doctor");
         Person carpenter = new Person("carpenter");
         Person hunter = new Person("hunter");
-        Person[] village = {farmer, doctor, carpenter, hunter};
+
+
+        ArrayList<Person> village = new ArrayList<Person>();
+        village.add(doctor);
+        village.add(farmer);
+        village.add(carpenter);
+        village.add(hunter);
         String disaster = "";
+
 
         boolean mode = false;
         int day = 0;
         Random rand = new Random();
 
+        // VALIDATE COMMAND LINE ARGS
         if (args.length > 1) {
             System.out.println("Usage 1: java Simulation [-s | -a]");
             System.exit(-1);
@@ -32,31 +41,31 @@ public class Simulation {
         }
 
         // MAIN DAILY LOOP
-        while ((!farmer.isDead() || !doctor.isDead() || !hunter.isDead() || !carpenter.isDead()) && day <= 365) {
+        while ((!farmer.isDead() || !doctor.isDead() || !hunter.isDead() || !carpenter.isDead()) && day < 365) {
 
             day++;
 
             if (mode) {
 
                 //DOCTOR SKILLS
-                if (doctor.getFood() == 1) {doctor.increaseFood(1);}
-                else {
+                if (!doctor.isDead() && doctor.getFood() == 1) {doctor.increaseFood(1);}
+                else if (!doctor.isDead()) {
                     for (Person p : village) {p.increaseHealth(2);}
                 }
 
                 //FARMER SKILLS
-                if (day % 3 == 0) {
+                if (!farmer.isDead() && day % 3 == 0) {
                     for (Person p : village) {p.increaseFood(3);}
                 }
 
                 //CARPENTER SKILLS
-                if (carpenter.getFood() == 1) {carpenter.increaseFood(1);}
-                else {
+                if (!carpenter.isDead() && carpenter.getFood() == 1) {carpenter.increaseFood(1);}
+                else if (!carpenter.isDead()) {
                     for (Person p : village) {p.increaseShelter(1);}
                 }
 
                 //HUNTER SKILLS
-                if (rand.nextInt(5) == 0) {
+                if (!hunter.isDead() && rand.nextInt(5) == 0) {
                     for (Person p : village) {p.increaseFood(2);}
                 }
 
@@ -146,9 +155,15 @@ public class Simulation {
             //PRINT STATS
             System.out.println("Day " + day + ": " + disaster);
             System.out.println("-".repeat(25));
+
+            for (Person p : village) {if (!p.isDead()) {System.out.println(p.name + ": " + p.toString());}}
+            
+            System.out.println("");
+            
+            //SHOW DEAD VILLAGERS
             for (Person p : village) {
-                if (!p.isDead()) {
-                    System.out.println(p.name + ": " + p.toString());
+                if ((p.getFood() <= 0 || p.getHealth() <= 0) && !p.isDead()) {
+                    System.out.println(p.name + " is dead");
                 }
             }
 
@@ -156,19 +171,11 @@ public class Simulation {
             for (Person p : village) {p.checkIfDead();}
 
             System.out.println("");
-
-            //SHOW DEAD VILLAGERS
-            for (Person p : village) {
-                if (p.isDead() && p.isPrintable()) {
-                    System.out.println(p.name + " is dead");
-                    p.setPrintable(false);
-                }
-            }
-
-            System.out.println("");
         }
 
-        System.out.println("Everyone is dead\n");
+        if (day == 365) {System.out.println("Stable Simulation\n");} 
+        else {System.out.println("Everyone is dead\n");}
+        
         System.out.println(day + " days");
 
 
